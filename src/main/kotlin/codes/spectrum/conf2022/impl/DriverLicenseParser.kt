@@ -19,6 +19,4 @@ class DriverLicenseParser : IDocParser {
             )
         } else emptyList()
     }
-
-    private fun isRegionValid(region: String): Boolean = region != "00"
 }
