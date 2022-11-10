@@ -12,7 +12,7 @@ class InnFlParser: IDocParser {
                 docType = DocType.INN_FL,
                 value = getPlInnValue(input),
                 isValidSetup = true,
-                isValid = getPlInnValue(input).matches(DocType.GRZ.normaliseRegex),
+                isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
             )
         )
     }

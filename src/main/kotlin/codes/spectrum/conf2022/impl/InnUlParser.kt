@@ -11,7 +11,7 @@ class InnUlParser: IDocParser {
                 docType = DocType.INN_UL,
                 value = getUlInnValue(input),
                 isValidSetup = true,
-                isValid = getUlInnValue(input).matches(DocType.GRZ.normaliseRegex),
+                isValid = getUlInnValue(input).matches(DocType.INN_UL.normaliseRegex),
             )
         )
     }
