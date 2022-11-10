@@ -1,17 +1,31 @@
 package codes.spectrum.conf2022.impl
 
+import codes.spectrum.conf2022.doc_type.DocType
 import codes.spectrum.conf2022.input.IDocParser
 import codes.spectrum.conf2022.output.ExtractedDocument
 
 class InnFlParser: IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
-        return emptyList()
+
+        return listOf(
+            ExtractedDocument(
+                docType = DocType.INN_FL,
+                value = getPlInnValue(input),
+                isValidSetup = true,
+                isValid = getPlInnValue(input).matches(DocType.GRZ.normaliseRegex),
+            )
+        )
     }
     fun getPlInnValue(innString: String):String {
 
         var controlSum = 0
         var controlSum2 = 0
         val filteredString = innString.filter { it.isDigit() }
+
+        val isValid = RegionValidator.isValid(filteredString.take(2))
+        if (!isValid){
+            return ""
+        }
 
         val indexValue = listOf(7, 2, 4, 10, 3, 5, 9, 4, 6, 8, 0)
         val indexValue2 = listOf(3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8, 0)
