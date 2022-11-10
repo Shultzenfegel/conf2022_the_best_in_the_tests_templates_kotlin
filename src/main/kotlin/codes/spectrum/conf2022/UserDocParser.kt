@@ -52,7 +52,7 @@ class UserDocParser : IDocParser {
             InnUlParser(),        // Ваня
             OgrnParser(),         // Игорь
             OgrnIpParser(),       // Игорь
-            //StsParser(),          // Вадим
+            StsParser(),          // Вадим
             VinParser(),          // Саша
             SnilsParser(),        // Саша
         )
