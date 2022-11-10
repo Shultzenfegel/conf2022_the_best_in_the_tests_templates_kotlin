@@ -6,6 +6,10 @@ import codes.spectrum.conf2022.output.ExtractedDocument
 
 class InnUlParser: IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
+        val filteredString = input.filter { it.isDigit() }
+
+        val isValid = RegionValidator.isValid(filteredString.take(2))
+        if (filteredString.length == 12 && isValid){
         return return listOf(
             ExtractedDocument(
                 docType = DocType.INN_UL,
@@ -14,6 +18,7 @@ class InnUlParser: IDocParser {
                 isValid = getUlInnValue(input).matches(DocType.INN_UL.normaliseRegex),
             )
         )
+    }else return emptyList()
     }
 
     fun getUlInnValue(innString: String):String{
