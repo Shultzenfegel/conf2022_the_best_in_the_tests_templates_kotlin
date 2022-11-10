@@ -9,7 +9,7 @@ class InnUlParser : IDocParser {
         val filteredString = input.filter { it.isDigit() }
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
-        if (filteredString.length == 12 && isValid) {
+        if (filteredString.length == 10 && isValid) {
             if (getUlInnValue(input).isNotBlank()) {
                 return listOf(
                     ExtractedDocument(
