@@ -5,6 +5,6 @@ import codes.spectrum.conf2022.output.ExtractedDocument
 
 class SnilsParser: IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
-        TODO("Not yet implemented")
+        return emptyList()
     }
 }
