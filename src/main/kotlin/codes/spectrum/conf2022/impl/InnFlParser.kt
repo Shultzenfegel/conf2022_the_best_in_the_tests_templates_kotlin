@@ -6,33 +6,29 @@ import codes.spectrum.conf2022.output.ExtractedDocument
 
 class InnFlParser: IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
-        if (getPlInnValue(input).isNotBlank()){
-            return listOf(
-                ExtractedDocument(
-                    docType = DocType.INN_FL,
-                    value = getPlInnValue(input),
-                    isValidSetup = true,
-                    isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                )
-            )
-        }else
-            return listOf(
-                ExtractedDocument(
-                    docType = DocType.INN_FL,
-                    value = getPlInnValue(input),
-                    isValidSetup = false,
-                    isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                )
-            )
+        val filteredString = input.filter { it.isDigit() }
 
-//        return listOf(
-//            ExtractedDocument(
-//                docType = DocType.INN_FL,
-//                value = getPlInnValue(input),
-//                isValidSetup = true,
-//                isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-//            )
-//        )
+        val isValid = RegionValidator.isValid(filteredString.take(2))
+        if (filteredString.length == 12 && isValid){
+            if (getPlInnValue(input).isNotBlank()){
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_FL,
+                        value = getPlInnValue(input),
+                        isValidSetup = true,
+                        isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+                    )
+                )
+            }else
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_FL,
+                        value = getPlInnValue(input),
+                        isValidSetup = false,
+                        isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+                    )
+                )
+        } else return emptyList()
     }
     fun getPlInnValue(innString: String):String {
         var resultString = ""
