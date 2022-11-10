@@ -1,7 +1,7 @@
 package codes.spectrum.conf2022
 
 import codes.spectrum.conf2022.doc_type.DocType
-import codes.spectrum.conf2022.impl.DriveLicenseParser
+import codes.spectrum.conf2022.impl.DriverLicenseParser
 import codes.spectrum.conf2022.impl.GrzParser
 import codes.spectrum.conf2022.impl.InnFlParser
 import codes.spectrum.conf2022.impl.InnUlParser
@@ -45,16 +45,16 @@ class UserDocParser : IDocParser {
          */
 
         val parserList = listOf(
-            PassportParser(),    // Илья
-            DriveLicenseParser(),// Илья
-            GrzParser(),         // Вадим
-            InnFlParser(),       // Ваня
-            InnUlParser(),       // Ваня
-            OgrnParser(),        // Игорь
-            OgrnIpParser(),      // Игорь
-            StsParser(),         // Вадим
-            VinParser(),         // Саша
-            SnilsParser(),       // Саша
+            PassportParser(),     // Илья
+            DriverLicenseParser(),// Илья
+            GrzParser(),          // Вадим
+            InnFlParser(),        // Ваня
+            InnUlParser(),        // Ваня
+            OgrnParser(),         // Игорь
+            OgrnIpParser(),       // Игорь
+            StsParser(),          // Вадим
+            VinParser(),          // Саша
+            SnilsParser(),        // Саша
         )
 
         return parserList.map {
@@ -72,7 +72,32 @@ class UserDocParser : IDocParser {
 
     private fun qualificationTests(input: String): List<ExtractedDocument> {
         //TODO: вот тут надо пройти квалификацию по тестам из base.csv, которые начинаются на `@ BT...`
-        return emptyList()
+        val normalizedInput = input.replace("""[^BT\d]""".toRegex(), "")
+
+        return buildList {
+            val t1Result = """(BTT[01]\d{4,5})""".toRegex().find(normalizedInput)?.groupValues?.get(1)
+            if (t1Result != null) {
+                add(
+                    ExtractedDocument(
+                        docType = DocType.T1,
+                        value = t1Result,
+                        isValidSetup = true,
+                        isValid = normalizedInput.matches("""BTT[01]5\d{2,3}7""".toRegex())
+                    )
+                )
+            }
+            val t2Result = """(BTT[02]\d{4})""".toRegex().find(normalizedInput)?.groupValues?.get(1)
+            if (t2Result != null) {
+                add(
+                    ExtractedDocument(
+                        docType = DocType.T2,
+                        value = t2Result,
+                        isValidSetup = true,
+                        isValid = normalizedInput.matches("""BTT[02]\d*5\d*""".toRegex())
+                    )
+                )
+            }
+        }.sortedBy { !it.isValid }
     }
 
     private fun preparedSampleTests(input: String): List<ExtractedDocument> {
