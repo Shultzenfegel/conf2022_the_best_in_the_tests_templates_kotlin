@@ -8,7 +8,7 @@ class PassportParser : IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
         val prepared = input.filter { it.isDigit() }
         return if (prepared.matches(DocType.PASSPORT_RF.normaliseRegex)) {
-            val isValid = isRegionValid(prepared.take(2)) && isLevelValid(prepared.substring(2, 3))
+            val isValid = RegionValidator.isValid(prepared.take(2)) && isLevelValid(prepared.substring(2, 3))
             listOf(
                 ExtractedDocument(
                     docType = DocType.PASSPORT_RF,
@@ -20,6 +20,5 @@ class PassportParser : IDocParser {
         } else emptyList()
     }
 
-    private fun isRegionValid(region: String): Boolean = region != "00"
     private fun isLevelValid(level: String): Boolean = level.toInt() in 0..3
 }
