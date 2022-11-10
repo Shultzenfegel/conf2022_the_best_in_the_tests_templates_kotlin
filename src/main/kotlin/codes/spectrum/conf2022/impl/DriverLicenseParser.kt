@@ -8,7 +8,7 @@ class DriverLicenseParser : IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
         val prepared = input.filter { it.isDigit() }
         return if (prepared.matches(DocType.DRIVER_LICENSE.normaliseRegex)) {
-            val isValid = isRegionValid(prepared.take(2))
+            val isValid = RegionValidator.isValid(prepared.take(2))
             listOf(
                 ExtractedDocument(
                     docType = DocType.DRIVER_LICENSE,
@@ -19,6 +19,4 @@ class DriverLicenseParser : IDocParser {
             )
         } else emptyList()
     }
-
-    private fun isRegionValid(region: String): Boolean = region != "00"
 }
