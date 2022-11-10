@@ -6,24 +6,43 @@ import codes.spectrum.conf2022.output.ExtractedDocument
 
 class InnFlParser: IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
-
-        return listOf(
-            ExtractedDocument(
-                docType = DocType.INN_FL,
-                value = getPlInnValue(input),
-                isValidSetup = true,
-                isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+        if (getPlInnValue(input).isNotBlank()){
+            return listOf(
+                ExtractedDocument(
+                    docType = DocType.INN_FL,
+                    value = getPlInnValue(input),
+                    isValidSetup = true,
+                    isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+                )
             )
-        )
+        }else
+            return listOf(
+                ExtractedDocument(
+                    docType = DocType.INN_FL,
+                    value = getPlInnValue(input),
+                    isValidSetup = false,
+                    isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+                )
+            )
+
+//        return listOf(
+//            ExtractedDocument(
+//                docType = DocType.INN_FL,
+//                value = getPlInnValue(input),
+//                isValidSetup = true,
+//                isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
+//            )
+//        )
     }
     fun getPlInnValue(innString: String):String {
+        var resultString = ""
 
         var controlSum = 0
         var controlSum2 = 0
         val filteredString = innString.filter { it.isDigit() }
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
-        if (!isValid){
+        if (!isValid) {
             return ""
         }
 
@@ -40,50 +59,50 @@ class InnFlParser: IDocParser {
                 val digitValue = indexValue[index] * digitFromString
                 controlSum += digitValue
             }
-        }
-        /**
-         * Вычисляется контрольное число_1 как остаток от деления контрольной суммы на 11.
-         */
-        var controlValue1 = controlSum % 11
 
-        /**
-         * Если контрольное число_1 больше 9, то контрольное число_1 вычисляется как остаток от деления контрольного числа_1 на 10.
-         */
+            /**
+             * Вычисляется контрольное число_1 как остаток от деления контрольной суммы на 11.
+             */
+            var controlValue1 = controlSum % 11
 
-        if (controlValue1 > 9) {
-            controlValue1 = controlValue1 % 10
-        }
+            /**
+             * Если контрольное число_1 больше 9, то контрольное число_1 вычисляется как остаток от деления контрольного числа_1 на 10.
+             */
 
-        /**
-         * Вычисляется контрольная сумма по 12-ти знакам со следующими весовыми коэффициентами:
-         */
+            if (controlValue1 > 9) {
+                controlValue1 = controlValue1 % 10
+            }
 
-        if (filteredString.length == 12) {
+            /**
+             * Вычисляется контрольная сумма по 12-ти знакам со следующими весовыми коэффициентами:
+             */
+
             for (index in indexValue2.indices) {
                 val digitFromString = filteredString[index].toString().toInt()
                 val digitValue = indexValue2[index] * digitFromString
                 controlSum2 += digitValue
             }
+
+            /**
+             * Вычисляется контрольное число_2 как остаток от деления контрольной суммы на 11.
+             */
+            var controlValue2 = controlSum2 % 11
+
+            /**
+             *  Если контрольное число_2 больше 9, то контрольное число_2 вычисляется как остаток от деления контрольного числа_2
+             */
+            if (controlValue2 > 9) {
+                controlValue2 = controlValue2 % 10
+            }
+
+            if (controlValue1 == filteredString[10].toString().toInt() &&
+                controlValue2 == filteredString[11].toString().toInt()
+            ) {
+                resultString = filteredString
+            } else
+                resultString = ""
         }
-
-        /**
-         * Вычисляется контрольное число_2 как остаток от деления контрольной суммы на 11.
-         */
-        var controlValue2 = controlSum2 % 11
-
-        /**
-         *  Если контрольное число_2 больше 9, то контрольное число_2 вычисляется как остаток от деления контрольного числа_2
-         */
-        if (controlValue2 > 9) {
-            controlValue2 = controlValue2 % 10
-        }
-
-        if (controlValue1 == filteredString[10].toString().toInt() &&
-            controlValue2 == filteredString[11].toString().toInt()
-        ) {
-            return filteredString
-        } else
-            return ""
+        return resultString
     }
 
 }

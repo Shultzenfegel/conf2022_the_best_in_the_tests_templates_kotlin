@@ -12,6 +12,6 @@ class LocalTest : TestBase(
         File(PROJECT_ROOT_DIR, BASE_TEST_FILE_NAME),
         File(PROJECT_ROOT_DIR, LOCAL_TEST_FILE_NAME),
     ),
-    enabledByDefault = false
+    enabledByDefault = true
 ) {
 }
