@@ -11,7 +11,16 @@ class InnFlParser : IDocParser {
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (filteredString.length == 12 && isValid) {
                 return getPlInnValue(input)
-            }  else return emptyList()
+            }  else if (filteredString.length == 10 && !isValid) {
+            return listOf(
+                ExtractedDocument(
+                    docType = DocType.INN_UL,
+                    value = filteredString,
+                    isValidSetup = true,
+                    isValid = false
+                )
+            )
+        } else return emptyList()
     }
 
     fun getPlInnValue(innString: String): List<ExtractedDocument> {

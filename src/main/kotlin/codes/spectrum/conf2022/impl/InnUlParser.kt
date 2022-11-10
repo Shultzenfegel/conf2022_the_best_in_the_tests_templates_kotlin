@@ -11,6 +11,15 @@ class InnUlParser : IDocParser {
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (filteredString.length == 10 && isValid) {
             return getUlInnValue(input)
+        } else if (filteredString.length == 10 && !isValid) {
+            return listOf(
+                ExtractedDocument(
+                    docType = DocType.INN_UL,
+                    value = filteredString,
+                    isValidSetup = true,
+                    isValid = false
+                )
+            )
         } else return emptyList()
     }
 
