@@ -20,16 +20,16 @@
 Номер ТС П789ЫЦ66 -> ==GRZ- # ГРЗ с кириллицей, невалидные символы
 Номер регистрации Р987ТС 166 какие-то слова -> ==GRZ+:Р987ТС166 # ГРЗ с регионом через пробел
 Номер регистрации Р+987-ТС_166 какие-то слова -> ==GRZ+:Р987ТС166 # ГРЗ с левыми символами
-9210 123321 -> ~?PASSPORT_RF+,DRIVER_LICENSE+ # код региона севастополь (пруфы у вадима в скайпе)
-9510 123321 -> ~?PASSPORT_RF+,DRIVER_LICENSE+ # код региона чеченская республика (регионы проверял подставляя в линку регион на сайте гибдд)
-9010 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 90
-9110 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 91
-9310 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 93
-9410 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 94
-9610 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 96
-9710 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 97
-9810 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 98
-9910 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE- # код региона 99
+9210 123321 -> ~?PASSPORT_RF+,DRIVER_LICENSE+,INN_UL- # код региона севастополь (пруфы у вадима в скайпе)
+9510 123321 -> ~?PASSPORT_RF+,DRIVER_LICENSE+,INN_UL- # код региона чеченская республика (регионы проверял подставляя в линку регион на сайте гибдд)
+9010 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 90
+9110 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 91
+9310 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 93
+9410 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 94
+9610 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 96
+9710 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 97
+9810 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 98
+9910 123321 -> ~?PASSPORT_RF-,DRIVER_LICENSE-,INN_UL- # код региона 99
 серия 5010 номер 531432 -> ~?PASSPORT_RF:5010531432,DRIVER_LICENSE:5010531432
 1137746185818 -> ~?OGRN+:1137746185818
 1-13-77-4618581-9 -> ~?OGRN-:1137746185819 # неправильное контрольное число
