@@ -52,9 +52,9 @@ class UserDocParser : IDocParser {
             InnUlParser(),        // Ваня
             OgrnParser(),         // Игорь
             OgrnIpParser(),       // Игорь
-            StsParser(),          // Вадим
-            VinParser(),          // Саша
-            SnilsParser(),        // Саша
+            //StsParser(),          // Вадим
+            //VinParser(),          // Саша
+            //SnilsParser(),        // Саша
         )
 
         return parserList.map {

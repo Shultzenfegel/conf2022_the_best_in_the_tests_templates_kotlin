@@ -17,6 +17,7 @@ class InnUlParser: IDocParser {
     }
 
     fun getUlInnValue(innString: String):String{
+        var resultString = ""
         var controlSum = 0
         val filteredString = innString.filter { it.isDigit() }
 
@@ -33,7 +34,6 @@ class InnUlParser: IDocParser {
                 val digitValue = indexValue[index] * digitFromString
                 controlSum += digitValue
             }
-        }
 
         var controlValue1 = controlSum % 11
 
@@ -41,11 +41,13 @@ class InnUlParser: IDocParser {
             controlValue1 = controlValue1 % 10
         }
 
-        if (controlValue1 == filteredString[10].toString().toInt()
+        if (controlValue1 == filteredString[9].toString().toInt()
         ) {
-            return filteredString
+            resultString = filteredString
         } else
-            return ""
+            resultString = ""
 
+    }
+        return resultString
     }
 }
