@@ -10,35 +10,18 @@ class InnUlParser : IDocParser {
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (filteredString.length == 10 && isValid) {
-            if (getUlInnValue(input).isNotBlank()) {
-                return listOf(
-                    ExtractedDocument(
-                        docType = DocType.INN_FL,
-                        value = getUlInnValue(input),
-                        isValidSetup = true,
-                        isValid = getUlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                    )
-                )
-            } else
-                return listOf(
-                    ExtractedDocument(
-                        docType = DocType.INN_FL,
-                        value = getUlInnValue(input),
-                        isValidSetup = false,
-                        isValid = getUlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                    )
-                )
+            return getUlInnValue(input)
         } else return emptyList()
     }
 
-    fun getUlInnValue(innString: String): String {
+    fun getUlInnValue(innString: String): List<ExtractedDocument> {
         var resultString = ""
         var controlSum = 0
         val filteredString = innString.filter { it.isDigit() }
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (!isValid) {
-            return ""
+            return emptyList()
         }
 
         val indexValue = listOf(2, 4, 10, 3, 5, 9, 4, 6, 8, 0)
@@ -58,11 +41,25 @@ class InnUlParser : IDocParser {
 
             if (controlValue1 == filteredString[9].toString().toInt()
             ) {
-                resultString = filteredString
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_UL,
+                        value = filteredString,
+                        isValidSetup = true,
+                        isValid = true
+                    )
+                )
             } else
-                resultString = ""
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_UL,
+                        value = filteredString,
+                        isValidSetup = true,
+                        isValid = false
+                    )
+                )
 
         }
-        return resultString
+        return emptyList()
     }
 }

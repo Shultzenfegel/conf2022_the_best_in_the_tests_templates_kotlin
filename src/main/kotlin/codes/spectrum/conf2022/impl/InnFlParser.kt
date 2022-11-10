@@ -10,28 +10,11 @@ class InnFlParser : IDocParser {
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (filteredString.length == 12 && isValid) {
-            if (getPlInnValue(input).isNotBlank()) {
-                return listOf(
-                    ExtractedDocument(
-                        docType = DocType.INN_FL,
-                        value = getPlInnValue(input),
-                        isValidSetup = true,
-                        isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                    )
-                )
-            } else
-                return listOf(
-                    ExtractedDocument(
-                        docType = DocType.INN_FL,
-                        value = getPlInnValue(input),
-                        isValidSetup = false,
-                        isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
-                    )
-                )
-        } else return emptyList()
+                return getPlInnValue(input)
+            }  else return emptyList()
     }
 
-    fun getPlInnValue(innString: String): String {
+    fun getPlInnValue(innString: String): List<ExtractedDocument> {
         var resultString = ""
 
         var controlSum = 0
@@ -40,7 +23,7 @@ class InnFlParser : IDocParser {
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
         if (!isValid) {
-            return ""
+            return emptyList()
         }
 
         val indexValue = listOf(7, 2, 4, 10, 3, 5, 9, 4, 6, 8, 0)
@@ -95,11 +78,25 @@ class InnFlParser : IDocParser {
             if (controlValue1 == filteredString[10].toString().toInt() &&
                 controlValue2 == filteredString[11].toString().toInt()
             ) {
-                resultString = filteredString
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_FL,
+                        value = filteredString,
+                        isValidSetup = true,
+                        isValid = true,
+                    )
+                )
             } else
-                resultString = ""
+                return listOf(
+                    ExtractedDocument(
+                        docType = DocType.INN_FL,
+                        value = filteredString,
+                        isValidSetup = true,
+                        isValid = false,
+                    )
+                )
         }
-        return resultString
+        return emptyList()
     }
 
 }
