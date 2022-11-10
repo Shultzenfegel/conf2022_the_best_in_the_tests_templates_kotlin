@@ -15,7 +15,7 @@ class GrzParser: IDocParser {
                     docType = DocType.GRZ,
                     value = normal,
                     isValidSetup = true,
-                    isValid = find.matches(DocType.GRZ.normaliseRegex),
+                    isValid = normal.matches(DocType.GRZ.normaliseRegex) && !normal.matches("""^\D000.*|.*\D0{2,3}$""".toRegex()),
                 )
             )
         } else {
