@@ -4,13 +4,13 @@ import codes.spectrum.conf2022.doc_type.DocType
 import codes.spectrum.conf2022.input.IDocParser
 import codes.spectrum.conf2022.output.ExtractedDocument
 
-class InnFlParser: IDocParser {
+class InnFlParser : IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
         val filteredString = input.filter { it.isDigit() }
 
         val isValid = RegionValidator.isValid(filteredString.take(2))
-        if (filteredString.length == 12 && isValid){
-            if (getPlInnValue(input).isNotBlank()){
+        if (filteredString.length == 12 && isValid) {
+            if (getPlInnValue(input).isNotBlank()) {
                 return listOf(
                     ExtractedDocument(
                         docType = DocType.INN_FL,
@@ -19,7 +19,7 @@ class InnFlParser: IDocParser {
                         isValid = getPlInnValue(input).matches(DocType.INN_FL.normaliseRegex),
                     )
                 )
-            }else
+            } else
                 return listOf(
                     ExtractedDocument(
                         docType = DocType.INN_FL,
@@ -30,7 +30,8 @@ class InnFlParser: IDocParser {
                 )
         } else return emptyList()
     }
-    fun getPlInnValue(innString: String):String {
+
+    fun getPlInnValue(innString: String): String {
         var resultString = ""
 
         var controlSum = 0
