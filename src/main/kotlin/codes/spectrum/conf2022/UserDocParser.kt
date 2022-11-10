@@ -45,16 +45,16 @@ class UserDocParser : IDocParser {
          */
 
         val parserList = listOf(
-            PassportParser(),
-            DriveLicenseParser(),
-            GrzParser(),
-            InnFlParser(),
-            InnUlParser(),
-            OgrnParser(),
-            OgrnIpParser(),
-            StsParser(),
-            VinParser(),
-            SnilsParser(),
+            PassportParser(),    // Илья
+            DriveLicenseParser(),// Илья
+            GrzParser(),         // Вадим
+            InnFlParser(),       // Ваня
+            InnUlParser(),       // Ваня
+            OgrnParser(),        // Игорь
+            OgrnIpParser(),      // Игорь
+            StsParser(),         // Вадим
+            VinParser(),         // Саша
+            SnilsParser(),       // Саша
         )
 
         return parserList.map {
