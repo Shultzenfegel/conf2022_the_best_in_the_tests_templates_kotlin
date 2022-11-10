@@ -1,6 +1,16 @@
 package codes.spectrum.conf2022
 
 import codes.spectrum.conf2022.doc_type.DocType
+import codes.spectrum.conf2022.impl.DriveLicenseParser
+import codes.spectrum.conf2022.impl.GrzParser
+import codes.spectrum.conf2022.impl.InnFlParser
+import codes.spectrum.conf2022.impl.InnUlParser
+import codes.spectrum.conf2022.impl.OgrnIpParser
+import codes.spectrum.conf2022.impl.OgrnParser
+import codes.spectrum.conf2022.impl.PassportParser
+import codes.spectrum.conf2022.impl.SnilsParser
+import codes.spectrum.conf2022.impl.StsParser
+import codes.spectrum.conf2022.impl.VinParser
 import codes.spectrum.conf2022.input.IDocParser
 import codes.spectrum.conf2022.output.ExtractedDocument
 import kotlin.random.Random
@@ -10,13 +20,14 @@ import kotlin.random.Random
  *
  * контракт один - пустой конструктор и реализация [IDocParser]
  */
-class UserDocParser: IDocParser {
+class UserDocParser : IDocParser {
     override fun parse(input: String): List<ExtractedDocument> {
+
         /**
          * Это пример чтобы пройти совсем первый базовый тест, хардкод, но понятно API,
          * просто посмотрите preparedSampleTests для примера
          */
-        if(input.startsWith("BASE_SAMPLE1.")) {
+        if (input.startsWith("BASE_SAMPLE1.")) {
             return preparedSampleTests(input)
         }
         /**
@@ -25,7 +36,7 @@ class UserDocParser: IDocParser {
          * надо честно реализовать спеки по DocType.T1 и DocType.T2
          * мы их будем проверять секретными тестами!!!
          */
-        if(input.startsWith("@ ")) {
+        if (input.startsWith("@ ")) {
             return qualificationTests(input)
         }
 
@@ -33,7 +44,30 @@ class UserDocParser: IDocParser {
          * Вот тут уже можете начинать свою реализацию боевого кода
          */
 
-        return emptyList()
+        val parserList = listOf(
+            PassportParser(),
+            DriveLicenseParser(),
+            GrzParser(),
+            InnFlParser(),
+            InnUlParser(),
+            OgrnParser(),
+            OgrnIpParser(),
+            StsParser(),
+            VinParser(),
+            SnilsParser(),
+        )
+
+        return parserList.map {
+            it.parse(input)
+        }.flatten().sortedBy {
+            !it.isValid
+        }.ifEmpty {
+            listOf(
+                ExtractedDocument(
+                    docType = DocType.NOT_FOUND
+                )
+            )
+        }
     }
 
     private fun qualificationTests(input: String): List<ExtractedDocument> {
